@@ -160,10 +160,10 @@ def make_calib_file(calib, calib_target_path, image_dir, frame):
 
     newPoint = np.matmul(transformation_matrix, yxz)
     
-    #rot_matrix = np.array(R.from_euler('xyz', [newPoint[0], newPoint[1]-0.01, newPoint[2]]).as_dcm()) #2019_02_27
+    #rot_matrix = np.array(R.from_euler('xyz', [newPoint[0], newPoint[1]-0.01, newPoint[2]]).as_matrix()) #2019_02_27
     
     
-    rot_matrix = np.array(R.from_euler('xyz', [newPoint[0], newPoint[1], newPoint[2]]).as_dcm()) #ORIGINAL
+    rot_matrix = np.array(R.from_euler('xyz', [newPoint[0], newPoint[1], newPoint[2]]).as_matrix()) #ORIGINAL
 
     trans_matrix = np.array(cam_extrinsic[0:3,3])
     # Swapping
@@ -378,7 +378,7 @@ def write_txt_annotation(frame,cam,out_dir,mode,image_dir,drive,seq,drive_and_se
 
 
         #T_Lidar_Cuboid = np.eye(4); #identity matrix
-        #T_Lidar_Cuboid[0:3,0:3] = R.from_euler('z', cuboid['yaw'], degrees=False).as_dcm(); #make a directional cosine matrix using the yaw, i.e rotation about z, yaw angle
+        #T_Lidar_Cuboid[0:3,0:3] = R.from_euler('z', cuboid['yaw'], degrees=False).as_matrix(); #make a directional cosine matrix using the yaw, i.e rotation about z, yaw angle
 
         '''
         Rotations in 3 dimensions can be represented by a sequece of 3 rotations around a sequence of axes. 
@@ -391,7 +391,7 @@ def write_txt_annotation(frame,cam,out_dir,mode,image_dir,drive,seq,drive_and_se
         Returns object containing the rotation represented by the sequencce of rotations around given axes with given angles
         
         T_Lidar_Cuboid = basic rotation (elemental rotation) : R_z(theta = yaw) = [[ cos(theta) - sin(theta) 0 etc]]
-        * .as_dcm - Represent as direction cosine matrices.
+        * .as_matrix - Represent as direction cosine matrices.
 
         3D rotations can be represented using direction cosine matrices, which are 3 x 3 real orthogonal matrices with determinant equal to +1
         
